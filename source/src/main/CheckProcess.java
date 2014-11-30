@@ -20,6 +20,12 @@ public class CheckProcess implements Runnable {
 	@Override
 	public void run() {
 		while (Win.moniProcess) {
+			try {
+				//防止在启动时窗口跑到左上角
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			try { 
 				String cmdString = "cmd /c tasklist /fo csv /fi \"imagename eq "+Win.processName+" \" /NH";
 				Process p = Runtime.getRuntime().exec(cmdString);
@@ -56,7 +62,7 @@ public class CheckProcess implements Runnable {
 				e.printStackTrace(); 
 			} 
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(4000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

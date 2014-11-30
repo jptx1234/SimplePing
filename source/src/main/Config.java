@@ -85,7 +85,7 @@ public class Config extends JDialog implements ActionListener,ChangeListener,Foc
 		ipPanel = new JPanel(new BorderLayout(5, 0));
 		JLabel ipTips = new JLabel("Òª¼à²âIP£º");
 		String firIP = "127.0.0.1";
-		if (Win.IP != null && Win.IP.capacity() != 0) {
+		if (Win.IP.size() != 0) {
 			firIP = Win.IP.firstElement();
 		}
 		ipString = new JTextField(firIP);
@@ -198,8 +198,8 @@ public class Config extends JDialog implements ActionListener,ChangeListener,Foc
 		if (thisWindow == null) {
 			thisWindow=new Config(info,win);
 			thisWindow.pack();
-			thisWindow.setVisible(true);
 			thisWindow.setLocationRelativeTo(null);
+			thisWindow.setVisible(true);
 		}else {
 			thisWindow.setVisible(true);
 		}

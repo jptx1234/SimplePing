@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JWindow;
+import javax.swing.SwingUtilities;
 
 @SuppressWarnings("serial")
 public class JLabelWithFont extends JLabel {
@@ -57,11 +58,17 @@ public class JLabelWithFont extends JLabel {
 				isCn = true;
 			}
 		}
-		int oldWidth = Win.w.getWidth();
-		Point p = Win.w.getLocation();
-		Win.w.pack();
-		Win.w.setLocation(p.x-(Win.w.getWidth()-oldWidth)/2,p.y);
-		Win.w.pack();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				int oldWidth = Win.w.getWidth();
+				Point p = Win.w.getLocation();
+				Win.w.pack();
+				Win.w.setLocation(p.x-(Win.w.getWidth()-oldWidth)/2,p.y);
+				Win.w.pack();
+			}
+		});
 	}
 	
 	@Override

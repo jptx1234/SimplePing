@@ -25,7 +25,7 @@ public class PingThread implements Runnable {
 	public void run() {
 		while (true) {
 			synchronized (Win.IP) {
-				if (runFlag && Win.IP.capacity() != 0) {
+				if (runFlag && Win.IP.size() != 0) {
 					String mes=ping(Win.IP);
 					if (runFlag) {
 						info.setText(mes);

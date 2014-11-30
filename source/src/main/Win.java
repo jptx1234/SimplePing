@@ -107,7 +107,13 @@ public class Win implements MouseListener,MouseMotionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Config.showon(info, w);
+				SwingUtilities.invokeLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						Config.showon(info, w);
+					}
+				});
 			}
 		});
 		exit.addActionListener(new ActionListener() {
