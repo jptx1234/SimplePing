@@ -27,8 +27,7 @@ public class CheckProcess implements Runnable {
 				e.printStackTrace();
 			}
 			try { 
-				String cmdString = "cmd /c tasklist /fo csv /fi \"imagename eq "+Win.processName+" \" /NH";
-				Process p = Runtime.getRuntime().exec(cmdString);
+				Process p = Runtime.getRuntime().exec("tasklist /fo csv /fi \"imagename eq "+Win.processName+" \" /NH");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				String line;
 				StringBuilder sb=new StringBuilder();
@@ -44,7 +43,12 @@ public class CheckProcess implements Runnable {
 					info.setText("未发现进程");
 					break;
 				case 1:
-					Vector<String> conIP=getConIP(processString.split(",")[1]);
+					Vector<String> conIP=getConIP(processString.split(",")[1].replaceAll("\"", ""));
+					if (conIP.size() == 0) {
+						pingThread.runFlag = false;
+						info.setText("进程未建立TCP连接");
+						break;
+					}
 					synchronized (Win.IP) {
 						if (Win.moniProcess) {
 							Win.IP = conIP;
@@ -79,18 +83,20 @@ public class CheckProcess implements Runnable {
 	public Vector<String> getConIP(String pid){
 		Vector<String> ConIP=new Vector<>(4);
 		try {
-			Process p = Runtime.getRuntime().exec("cmd /c netstat -a -n -o|findstr "+pid);
+			Process p = Runtime.getRuntime().exec("netstat -a -n -o");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String line;
 			StringBuilder sb=new StringBuilder();
 			while((line = reader.readLine()) != null){
-				sb.append(line);
+				line = line.trim();
+				if (line.endsWith(pid) && line.startsWith("TCP")) {
+					sb.append(line+" ");
+				}
 			} 
 			p.getInputStream().close(); 
 			String[] mes=sb.toString().split(" +");
-			String pid_num=pid.replaceAll("\"", "");
 			for (int i = 0; i < mes.length; i++) {
-				if (mes[i].trim().equals(pid_num)) {
+				if (mes[i].trim().equals(pid)) {
 					String str = mes[i-2].split(":")[0];
 					if (!ConIP.contains(str) && !str.startsWith("127")) {
 						ConIP.add(str);

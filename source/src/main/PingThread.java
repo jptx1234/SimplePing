@@ -37,7 +37,7 @@ public class PingThread implements Runnable {
 				}
 			}
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(1500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -59,7 +59,7 @@ public class PingThread implements Runnable {
 		String maxtimeString = "ÔÝÎÞÊý¾Ý";
 		try {
 			for (String string : IP) {
-				Process p=Runtime.getRuntime().exec("cmd /c ping "+string+" -n 1");
+				Process p=Runtime.getRuntime().exec("ping "+string+" -n 1");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				String line;
 				StringBuilder sb=new StringBuilder();
